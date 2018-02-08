@@ -1,0 +1,8 @@
+bin/
+pkg/
+*.tar.gz
+dumps/
+dump/
+runner.sh
+ignored/
+mocks/
