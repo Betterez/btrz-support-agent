@@ -72,6 +72,7 @@ func pullerService() {
 			le, _ = le_go.Connect(leToken)
 			le.Print("done anonymizing.")
 			betterez.SendSlackNotification("Operation completed!")
+			le.Printf("restarting server done with %v\r\n", betterez.AnnounceCompletion())
 		}
 		time.Sleep(time.Minute)
 	}

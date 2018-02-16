@@ -6,3 +6,4 @@ dump/
 runner.sh
 ignored/
 mocks/
+config/

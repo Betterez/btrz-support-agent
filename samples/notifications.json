@@ -1,0 +1,5 @@
+{
+  "incoming":"https://sqs.us-east-1.amazonaws.com/accountnumber/queue-name",
+  "outgoing":"https://sqs.us-east-1.amazonaws.com/accountnumber/queue-name",
+  "server-key":"/path/to/your/key/file"
+}

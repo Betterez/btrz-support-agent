@@ -1,10 +1,11 @@
-default:
+default: clean
 	@export GOPATH=$$GOPATH:$$(pwd) && go install agent
 run: default
 	@bin/agent
 	@echo ""
 clean:
 	@rm -rf bin
+	@rm -rf pkg
 setup:
 	go get gopkg.in/mgo.v2
 	go get -u github.com/aws/aws-sdk-go/...
