@@ -1,0 +1,36 @@
+machine:
+  image:  connex_ossec_16
+  instance_type: t2.medium
+  start:  "/home/bz-app/connex2/connex2"
+  daemon_type:  systemd
+  install:
+  environment_variables:
+    - "SERVER_ID=$(wget -q -O - http://instance-data/latest/meta-data/instance-id)"
+deployment:
+  service_name: "connex2"
+  source:
+    type: s3
+    bucket: "betterez-connex2_16"
+    file_name: connex2
+  service_type: "http"
+  nginx_conf: "connex"
+  path_name:  "connex"
+  healthcheck:
+    perform: true
+    command: "curl -m 5 -i localhost:22000/healthcheck|head -n1"
+    result: "200 OK"
+override:
+  production:
+    machine:
+      instance_type: c4.xlarge
+  support:
+    deployment:
+        elb_version: 0
+  staging:
+    deployment:
+      source:
+        branch_name: staging
+    machine:
+      environment_variables:
+        - "NODE_ENV=staging"
+        - "location=aws"
