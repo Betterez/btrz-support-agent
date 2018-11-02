@@ -56,7 +56,7 @@ func restoreFromArchive(archiveName string, deploymentData *DeploymentData) erro
 			le.Printf("Error %v while running %v\n%s", err, cmd.Args, out.String())
 			return err
 		}
-		le.Printf("cmd done with %s", out)
+		le.Printf("cmd done with %s", out.String())
 		le.Close()
 	}
 	le, _ = le_go.Connect(leToken)

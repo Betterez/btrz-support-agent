@@ -3,13 +3,14 @@ package betterez
 import (
 	"encoding/json"
 	"errors"
+	"log"
+	"os"
+	"strings"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sqs"
 	"github.com/bitly/go-simplejson"
-	"log"
-	"os"
-	"strings"
 )
 
 var (
@@ -108,9 +109,10 @@ func GetSQSMessage(session *session.Session) (*RequestInformation, error) {
 	return result, nil
 }
 
+// SetCompletionMessage - send completion message
 func SetCompletionMessage(awsSession *session.Session, messageData string) (*sqs.SendMessageOutput, error) {
 	if sqsPushURL == "" {
-		return nil, errors.New("No output queue.")
+		return nil, errors.New("no output queue")
 	}
 	sqsService := sqs.New(awsSession)
 	response, err := sqsService.SendMessage(&sqs.SendMessageInput{

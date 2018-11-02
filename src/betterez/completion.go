@@ -8,6 +8,7 @@ import (
 	"sshconnector"
 )
 
+// AnnounceCompletion - notify that the task completed
 func AnnounceCompletion() error {
 	if serverKeyFile == "" {
 		return errors.New("No key file settings")
