@@ -2,10 +2,11 @@ package betterez
 
 import (
 	"betterez/data"
+	"os"
+
 	"github.com/bsphere/le_go"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"os"
 )
 
 var (
