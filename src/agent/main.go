@@ -26,7 +26,7 @@ func pullerService() {
 	if err != nil {
 		log.Fatalf("can't use log entries. Error %v", err)
 	}
-	le.Print("Support server running")
+	le.Print("Support server running version 1.0.0.3")
 	for {
 		response, err := betterez.GetSQSMessage(sess)
 		if err != nil {
