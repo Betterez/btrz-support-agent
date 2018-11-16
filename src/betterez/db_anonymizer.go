@@ -15,6 +15,7 @@ var (
 		"transactions",
 	}
 	masterCollectionName = "customers"
+	usersCollection      = "users"
 )
 
 // AnonymizeDB anonymize all records in the DB
@@ -62,6 +63,9 @@ func AnonymizeDB(deploymentData *DeploymentData) (bool, error) {
 	}
 	le, _ = le_go.Connect(leToken)
 	le.Printf("Done! %d records processed.", recordsProcessed)
+	le.Println("updating users password")
+	session.DB(deploymentData.DatabaseName).C(usersCollection).Update(bson.M{},
+		bson.M{"$set": bson.M{"password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92"}})
 	le.Close()
 	return true, nil
 }
