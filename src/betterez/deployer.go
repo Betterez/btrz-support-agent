@@ -27,23 +27,28 @@ func DeployToServer(archiveName string, deploymentData *DeploymentData) (bool, e
 	return true, nil
 }
 
-func restoreFromArchive(archiveName string, deploymentData *DeploymentData) error {
-	leToken := os.Getenv("LE_TOKEN")
-	le, _ := le_go.Connect(leToken)
+func createMongoDumpCommands(archiveName string, deploymentData *DeploymentData) []*exec.Cmd {
 	commands := []*exec.Cmd{}
 	commands = append(commands, exec.Command("rm", "-rf", "dump"))
 	commands = append(commands, exec.Command("tar", "-xzf", archiveName))
 	commands = append(commands, exec.Command("rm", "-f", fmt.Sprintf("dump/%s/system.users.bson", deploymentData.DatabaseName)))
 	commands = append(commands, exec.Command("rm", "-f", fmt.Sprintf("dump/%s/system.users.metadata.json", deploymentData.DatabaseName)))
-	var out bytes.Buffer
 	if deploymentData.IsAuthenticated() {
 		commands = append(commands, exec.Command("mongorestore", "--authenticationDatabase", "admin",
 			"-u", deploymentData.Username, "-p", deploymentData.Password))
 	} else {
 		commands = append(commands, exec.Command("mongorestore"))
 	}
+	return commands
+}
+
+func restoreFromArchive(archiveName string, deploymentData *DeploymentData) error {
+	leToken := os.Getenv("LE_TOKEN")
+	commands := createMongoDumpCommands(archiveName, deploymentData)
+	var out bytes.Buffer
+
 	for cmdIndex, cmd := range commands {
-		le, _ = le_go.Connect(leToken)
+		le, _ := le_go.Connect(leToken)
 		if cmdIndex < (len(commands) - 1) {
 			le.Printf("running %s", cmd.Args)
 		} else {
@@ -59,7 +64,7 @@ func restoreFromArchive(archiveName string, deploymentData *DeploymentData) erro
 		le.Printf("cmd done with %s", out.String())
 		le.Close()
 	}
-	le, _ = le_go.Connect(leToken)
+	le, _ := le_go.Connect(leToken)
 	le.Printf("Done restoring mongo...")
 	le.Printf("Connecting mongo...")
 	session, err := mgo.Dial(deploymentData.MakeDialString())
@@ -71,6 +76,7 @@ func restoreFromArchive(archiveName string, deploymentData *DeploymentData) erro
 	betterezRole[0] = "dbOwner"
 	le.Printf("updating %s, user %s,password:%s", deploymentData.DatabaseName, deploymentData.Username, fmt.Sprintf("%x", sha256.Sum256([]byte(deploymentData.Password))))
 	betterezUser := &mgo.User{Password: deploymentData.Password, Username: deploymentData.Username, Roles: betterezRole}
+
 	session.DB(deploymentData.DatabaseName).RemoveUser(deploymentData.Username)
 	err = session.DB(deploymentData.DatabaseName).UpsertUser(betterezUser)
 	if err != nil {

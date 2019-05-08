@@ -7,6 +7,7 @@ import (
 )
 
 func TestSQSOutput(t *testing.T) {
+	t.Skip()
 	configFileName = "../../config/notifications.json"
 	loadConfigData(configFileName)
 	messageToSend := `{"type":"completion","service":"connex","environment":"support"}`

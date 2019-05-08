@@ -74,7 +74,7 @@ func TestUpdatingRecords(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if ok.Updated < 1 {
+	if ok.Updated != 10 {
 		t.Fatalf("bad number of records updated: %d", ok.Updated)
 	}
 }
@@ -99,6 +99,34 @@ func TestGettingDoc(t *testing.T) {
 	for iter.Next(&info) {
 		if info.Data != dataName {
 			t.Fatalf("data should be %s, but we got %s", dataName, info.Data)
+		}
+	}
+}
+
+func TestDeletingSpecificKey(t *testing.T) {
+	deploymentData := getLocalDeployment()
+	session, err := mgo.Dial(deploymentData.MakeDialString())
+	if err != nil {
+		t.SkipNow()
+	}
+	values, err := session.DB(database).C(collection).UpdateAll(bson.M{},
+		bson.M{"$unset": bson.M{"Data": "1"}})
+	if err != nil {
+		t.Fatal(err, "when running a command")
+	}
+	if values.Updated != 10 {
+		t.Errorf("number of values effected is %d and not 10", values.Updated)
+	}
+	query := session.DB(database).C(collection).Find(bson.M{"Username": "test000"})
+	records, _ := query.Count()
+	if records < 1 {
+		t.Fatal("no records to check")
+	}
+	iter := query.Iter()
+	var info dataTest
+	for iter.Next(&info) {
+		if info.Data != "" {
+			t.Error("data suppose to be cleared")
 		}
 	}
 }
