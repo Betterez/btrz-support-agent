@@ -14,10 +14,16 @@ const (
 	database   = "test"
 )
 
+type composeData struct {
+	Version int64 `bson:"version"`
+	Minor   int64 `bson:"minor"`
+}
+
 type dataTest struct {
-	Username string `bson:"Username"`
-	Data     string `bson:"Data"`
-	Password string `bson:"Password"`
+	Username string      `bson:"Username"`
+	Data     string      `bson:"Data"`
+	Password string      `bson:"Password"`
+	Compose  composeData `bson:"compose"`
 }
 
 func getLocalDeployment() *DeploymentData {
@@ -53,7 +59,7 @@ func TestCreateRecords(t *testing.T) {
 			bson.M{"Username": fmt.Sprintf("test%03d", i),
 				"Data":     "hello",
 				"Password": "secret",
-				"compose":  bson.M{"version": 1, "minor": 2},
+				"compose":  bson.M{"version": 11, "minor": 22},
 			})
 	}
 	records, err := session.DB(database).C(collection).Count()
@@ -115,7 +121,7 @@ func TestDeletingSpecificKey(t *testing.T) {
 		t.SkipNow()
 	}
 	values, err := session.DB(database).C(collection).UpdateAll(bson.M{},
-		bson.M{"$unset": bson.M{"Data": "1"}})
+		bson.M{"$unset": bson.M{"compose.minor": "1"}})
 	if err != nil {
 		t.Fatal(err, "when running a command")
 	}
@@ -130,7 +136,7 @@ func TestDeletingSpecificKey(t *testing.T) {
 	iter := query.Iter()
 	var info dataTest
 	for iter.Next(&info) {
-		if info.Data != "" {
+		if info.Compose.Minor != 0 {
 			t.Error("data suppose to be cleared")
 		}
 	}
