@@ -68,5 +68,10 @@ func AnonymizeDB(deploymentData *DeploymentData) (bool, error) {
 		// sha 256 12341234
 		bson.M{"$set": bson.M{"password": "1718c24b10aeb8099e3fc44960ab6949ab76a267352459f203ea1036bec382c2"}})
 	le.Close()
+	removeCreditData(session)
 	return true, nil
+}
+
+func removeCreditData(session *mgo.Session) {
+	session.DB(deploymentData.DatabaseName).C("accounts").UpdateAll(bson.M{}, bson.M{"$unset": bson.M{"preferences.paymentProviders.online_credit.params": "1"}})
 }
