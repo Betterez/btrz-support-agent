@@ -49,7 +49,12 @@ func TestCreateRecords(t *testing.T) {
 	}
 	session.DB(database).C(collection).DropCollection()
 	for i := 0; i < 10; i++ {
-		session.DB(database).C(collection).Insert(bson.M{"Username": fmt.Sprintf("test%03d", i), "Data": "hello", "Password": "secret"})
+		session.DB(database).C(collection).Insert(
+			bson.M{"Username": fmt.Sprintf("test%03d", i),
+				"Data":     "hello",
+				"Password": "secret",
+				"compose":  bson.M{"version": 1, "minor": 2},
+			})
 	}
 	records, err := session.DB(database).C(collection).Count()
 	if err != nil {
