@@ -6,7 +6,7 @@ required environment var:
 `MONGO_SERVER_ADDRESS`  - destination address
 `MONGO_USERNAME` - mongo username for the destination
 `MONGO_PASSWORD` - mongo password for the destination
-`BUCKET_NAME` - s3 bucket to pull the info from
+`BUCKET_NAME` - s3 bucket to pull the info from. Note that s3 access is assumed
 
 require config settings:
 1. config folder
