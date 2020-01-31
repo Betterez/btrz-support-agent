@@ -10,6 +10,7 @@ setup:
 	go get gopkg.in/mgo.v2
 	go get -u github.com/aws/aws-sdk-go/...
 	go get github.com/bsphere/le_go
+	go get github.com/bitly/go-simplejson
 edit:
 	@export GOPATH=$$GOPATH:$$(pwd) && atom .
 edit2:

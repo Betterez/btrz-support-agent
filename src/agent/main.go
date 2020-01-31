@@ -18,7 +18,7 @@ func pullerService() {
 	if !deploymentData.IsLegal() {
 		log.Fatalf("Can't get mongo variables!")
 	}
-	sess, err := session.NewSession(&aws.Config{Region: aws.String("us-east-1")})
+	awsSession, err := session.NewSession(&aws.Config{Region: aws.String("us-east-1")})
 	if err != nil {
 		log.Fatalf("error %v", err)
 	}
@@ -26,9 +26,9 @@ func pullerService() {
 	if err != nil {
 		log.Fatalf("can't use log entries. Error %v", err)
 	}
-	le.Print("Support server running version 1.0.0.4")
+	le.Print("Support server running version 1.0.0.6")
 	for {
-		response, err := betterez.GetSQSMessage(sess)
+		response, err := betterez.GetSQSMessage(awsSession)
 		if err != nil {
 			le.Print(err, " while trying to pull sqs message")
 		}
@@ -38,7 +38,7 @@ func pullerService() {
 			le.Print("got new support request")
 			betterez.SendSlackNotification("New db requests received, follow LE for execution details.")
 			deploymentData.DatabaseName = response.DatabaseName
-			ok, lastObject, err := betterez.LoadLastObjectFromBucket(response.BucketName, "dump.tar.gz", sess)
+			ok, lastObject, err := betterez.LoadLastObjectFromBucket(response.BucketName, "dump.tar.gz", awsSession)
 			if err != nil {
 				le.Printf("Error %v while loading object from s3, bucket %s", err, response.BucketName)
 				continue
@@ -72,17 +72,16 @@ func pullerService() {
 			le, _ = le_go.Connect(leToken)
 			le.Print("done anonymizing.")
 			betterez.SendSlackNotification("Operation completed!")
-			le.Printf("restarting server done with %v\r\n", betterez.AnnounceCompletion())
 		}
 		time.Sleep(time.Minute)
 	}
 }
 func showLastObjectSelected() {
-	sess, err := session.NewSession(&aws.Config{Region: aws.String("us-east-1")})
+	awsSession, err := session.NewSession(&aws.Config{Region: aws.String("us-east-1")})
 	if err != nil {
 		log.Fatalf("error %v", err)
 	}
-	object, err := betterez.GetLastObject(os.Getenv("BUCKET_NAME"), sess)
+	object, err := betterez.GetLastObject(os.Getenv("BUCKET_NAME"), awsSession)
 	if err != nil {
 		log.Fatal("error ", err)
 	}
