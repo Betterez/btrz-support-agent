@@ -75,7 +75,7 @@ func loadConfigData(fileName string) error {
 // GetSQSMessage gets the pull messages from the queue
 func GetSQSMessage(session *session.Session) (*RequestInformation, error) {
 	if sqsPullURL == "" {
-		return nil, errors.New("No input string for sqs message")
+		return nil, errors.New("No input string for sqs message ")
 	}
 	sqsService := sqs.New(session)
 	params := &sqs.ReceiveMessageInput{

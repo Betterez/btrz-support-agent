@@ -12,6 +12,10 @@ import (
 	"github.com/bsphere/le_go"
 )
 
+const (
+	CurrentVersion = "1.0.0.7"
+)
+
 func pullerService() {
 	leToken := os.Getenv("LE_TOKEN")
 	deploymentData := betterez.CreateDeploymentFromEnvVars()
@@ -26,16 +30,16 @@ func pullerService() {
 	if err != nil {
 		log.Fatalf("can't use log entries. Error %v", err)
 	}
-	le.Print("Support server running version 1.0.0.6")
+	le.Print("Support server running version ", CurrentVersion)
 	for {
 		response, err := betterez.GetSQSMessage(awsSession)
 		if err != nil {
-			le.Print(err, " while trying to pull sqs message")
+			le.Print(err, " while trying to pull sqs message ", CurrentVersion)
 		}
 		if response != nil {
 			le.Close()
 			le, _ = le_go.Connect(leToken)
-			le.Print("got new support request")
+			le.Print(CurrentVersion, "got new support request")
 			betterez.SendSlackNotification("New db requests received, follow LE for execution details.")
 			deploymentData.DatabaseName = response.DatabaseName
 			ok, lastObject, err := betterez.LoadLastObjectFromBucket(response.BucketName, "dump.tar.gz", awsSession)
