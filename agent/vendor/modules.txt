@@ -50,7 +50,7 @@ github.com/aws/aws-sdk-go/service/sso
 github.com/aws/aws-sdk-go/service/sso/ssoiface
 github.com/aws/aws-sdk-go/service/sts
 github.com/aws/aws-sdk-go/service/sts/stsiface
-# github.com/betterez/btrz-support-agent/utils v0.0.0-00010101000000-000000000000 => ../utils
+# github.com/betterez/btrz-support-agent/utils v0.0.0-20210614143923-519312c73a32
 ## explicit
 github.com/betterez/btrz-support-agent/utils
 # github.com/bitly/go-simplejson v0.5.0
@@ -66,4 +66,3 @@ gopkg.in/mgo.v2/bson
 gopkg.in/mgo.v2/internal/json
 gopkg.in/mgo.v2/internal/sasl
 gopkg.in/mgo.v2/internal/scram
-# github.com/betterez/btrz-support-agent/utils => ../utils
