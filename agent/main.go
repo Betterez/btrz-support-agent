@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	CurrentVersion = "1.0.0.8"
+	CurrentVersion = "1.0.0.9"
 )
 
 func pullerService() {

@@ -8,3 +8,4 @@ ignored/
 mocks/
 config/
 .DS_Store
+.vscode
