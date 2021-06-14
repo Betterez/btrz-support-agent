@@ -7,3 +7,4 @@ runner.sh
 ignored/
 mocks/
 config/
+.DS_Store

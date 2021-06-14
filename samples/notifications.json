@@ -1,4 +1,0 @@
-{
-  "incoming":"https://sqs.us-east-1.amazonaws.com/accountnumber/queue-name",
-  "outgoing":"https://sqs.us-east-1.amazonaws.com/accountnumber/queue-name"
-}
