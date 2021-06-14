@@ -1,7 +1,9 @@
 github.com/aws/aws-sdk-go v1.38.60 h1:MgyEsX0IMwivwth1VwEnesBpH0vxbjp5a0w1lurMOXY=
 github.com/aws/aws-sdk-go v1.38.60/go.mod h1:hcU610XS61/+aQV88ixoOzUoG7v3b31pl2zKMmprdro=
-github.com/betterez/btrz-support-agent/utils v0.0.0-20210614143923-519312c73a32 h1:CayCnz3JiQYGfIx/0dIg+ovlSmoltuNeQVDgjL5kjL8=
-github.com/betterez/btrz-support-agent/utils v0.0.0-20210614143923-519312c73a32/go.mod h1:Me7zHc6ysxqi8jD8VFEwnyM3iQkPxkbfl/Df4winE98=
+github.com/aws/aws-sdk-go v1.38.61 h1:wizuqQZe0K4iYJ+Slrs0aSQ4P94FAwqBUHwk46Iz5UA=
+github.com/aws/aws-sdk-go v1.38.61/go.mod h1:hcU610XS61/+aQV88ixoOzUoG7v3b31pl2zKMmprdro=
+github.com/betterez/btrz-support-agent/utils v0.0.0-20210614204152-3134e8ee1a35 h1:WvOwGO7NUSIOetLRhNRY3rQWlutVi5k9+oPPd5+Bxw4=
+github.com/betterez/btrz-support-agent/utils v0.0.0-20210614204152-3134e8ee1a35/go.mod h1:Me7zHc6ysxqi8jD8VFEwnyM3iQkPxkbfl/Df4winE98=
 github.com/bitly/go-simplejson v0.5.0 h1:6IH+V8/tVMab511d5bn4M7EwGXZf9Hj6i2xSwkNEM+Y=
 github.com/bitly/go-simplejson v0.5.0/go.mod h1:cXHtHw4XUPsvGaxgjIAn8PhEWG9NfngEKAMDJEczWVA=
 github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869 h1:DDGfHa7BWjL4YnC6+E63dPcxHo2sUxDIu8g3QgEJdRY=

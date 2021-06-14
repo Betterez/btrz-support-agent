@@ -1,4 +1,4 @@
-# github.com/aws/aws-sdk-go v1.38.60
+# github.com/aws/aws-sdk-go v1.38.61
 ## explicit
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/arn
@@ -50,7 +50,7 @@ github.com/aws/aws-sdk-go/service/sso
 github.com/aws/aws-sdk-go/service/sso/ssoiface
 github.com/aws/aws-sdk-go/service/sts
 github.com/aws/aws-sdk-go/service/sts/stsiface
-# github.com/betterez/btrz-support-agent/utils v0.0.0-20210614143923-519312c73a32
+# github.com/betterez/btrz-support-agent/utils v0.0.0-20210614204152-3134e8ee1a35
 ## explicit
 github.com/betterez/btrz-support-agent/utils
 # github.com/bitly/go-simplejson v0.5.0

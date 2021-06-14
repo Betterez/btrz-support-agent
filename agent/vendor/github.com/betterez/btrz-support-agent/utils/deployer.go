@@ -4,10 +4,9 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"fmt"
-	"os"
+	"log"
 	"os/exec"
 
-	"github.com/bsphere/le_go"
 	"gopkg.in/mgo.v2"
 )
 
@@ -43,46 +42,46 @@ func createMongoDumpCommands(archiveName string, deploymentData *DeploymentData)
 }
 
 func restoreFromArchive(archiveName string, deploymentData *DeploymentData) error {
-	leToken := os.Getenv("LE_TOKEN")
+	// leToken := os.Getenv("LE_TOKEN")
 	commands := createMongoDumpCommands(archiveName, deploymentData)
 	var out bytes.Buffer
 
 	for cmdIndex, cmd := range commands {
-		le, _ := le_go.Connect(leToken)
+		//le, _ := le_go.Connect(leToken)
 		if cmdIndex < (len(commands) - 1) {
-			le.Printf("running %s", cmd.Args)
+			log.Printf("running %s", cmd.Args)
 		} else {
-			le.Print("Running mongo restore, this will take a while...")
+			log.Print("Running mongo restore, this will take a while...")
 		}
 		cmd.Stdout = &out
 		err := cmd.Run()
-		le, _ = le_go.Connect(leToken)
+		//le, _ = le_go.Connect(leToken)
 		if err != nil {
-			le.Printf("Error %v while running %v\n%s", err, cmd.Args, out.String())
+			log.Printf("Error %v while running %v\n%s", err, cmd.Args, out.String())
 			return err
 		}
-		le.Printf("cmd done with %s", out.String())
-		le.Close()
+		log.Printf("cmd done with %s", out.String())
+		//le.Close()
 	}
-	le, _ := le_go.Connect(leToken)
-	le.Printf("Done restoring mongo...")
-	le.Printf("Connecting mongo...")
+	//le, _ := le_go.Connect(leToken)
+	log.Printf("Done restoring mongo...")
+	log.Printf("Connecting mongo...")
 	session, err := mgo.Dial(deploymentData.MakeDialString())
 	if err != nil {
-		le.Printf("%v error connecting mongo.", err)
+		log.Printf("%v error connecting mongo.", err)
 		return err
 	}
 	betterezRole := make([]mgo.Role, 1)
 	betterezRole[0] = "dbOwner"
-	le.Printf("updating %s, user %s,password:%s", deploymentData.DatabaseName, deploymentData.Username, fmt.Sprintf("%x", sha256.Sum256([]byte(deploymentData.Password))))
+	log.Printf("updating %s, user %s,password:%s", deploymentData.DatabaseName, deploymentData.Username, fmt.Sprintf("%x", sha256.Sum256([]byte(deploymentData.Password))))
 	betterezUser := &mgo.User{Password: deploymentData.Password, Username: deploymentData.Username, Roles: betterezRole}
 
 	session.DB(deploymentData.DatabaseName).RemoveUser(deploymentData.Username)
 	err = session.DB(deploymentData.DatabaseName).UpsertUser(betterezUser)
 	if err != nil {
-		le.Printf("%v error while adding user", err)
+		log.Printf("%v error while adding user", err)
 	} else {
-		le.Println("user updated!")
+		log.Println("user updated!")
 	}
 	session.Close()
 	return err
