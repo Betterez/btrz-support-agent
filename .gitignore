@@ -9,3 +9,4 @@ mocks/
 config/
 .DS_Store
 .vscode
+agent/config
