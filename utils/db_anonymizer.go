@@ -1,9 +1,8 @@
 package utils
 
 import (
-	"os"
+	"log"
 
-	"github.com/bsphere/le_go"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -19,8 +18,6 @@ var (
 
 // AnonymizeDB anonymize all records in the DB
 func AnonymizeDB(deploymentData *DeploymentData) (bool, error) {
-	leToken := os.Getenv("LE_TOKEN")
-	le, _ := le_go.Connect(leToken)
 	session, err := mgo.Dial(deploymentData.MakeDialString())
 	if err != nil {
 		return false, err
@@ -39,9 +36,7 @@ func AnonymizeDB(deploymentData *DeploymentData) (bool, error) {
 		_, ok := doneUpdates[updateKey]
 		recordsProcessed++
 		if recordsProcessed%100000 == 0 && recordsProcessed > 0 {
-			le, _ = le_go.Connect(leToken)
-			le.Printf("%d records processed ", recordsProcessed)
-			le.Close()
+			log.Printf("%d records processed ", recordsProcessed)
 		}
 		if ok {
 			doneUpdates[updateKey] = 1 + doneUpdates[updateKey]
@@ -60,13 +55,12 @@ func AnonymizeDB(deploymentData *DeploymentData) (bool, error) {
 		}
 		masterCollection.Update(bson.M{"_id": record.GetDataBody()["_id"]}, record.GetDataBody())
 	}
-	le, _ = le_go.Connect(leToken)
-	le.Printf("Done! %d records processed.", recordsProcessed)
-	le.Println("updating users password")
+
+	log.Printf("Done! %d records processed.", recordsProcessed)
+	log.Println("updating users password")
 	session.DB(deploymentData.DatabaseName).C(usersCollection).UpdateAll(bson.M{},
 		// sha 256 12341234
 		bson.M{"$set": bson.M{"password": "1718c24b10aeb8099e3fc44960ab6949ab76a267352459f203ea1036bec382c2"}})
-	le.Close()
 	removeCreditData(session, deploymentData)
 	return true, nil
 }

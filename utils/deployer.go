@@ -61,9 +61,7 @@ func restoreFromArchive(archiveName string, deploymentData *DeploymentData) erro
 			return err
 		}
 		log.Printf("cmd done with %s", out.String())
-		//le.Close()
 	}
-	//le, _ := le_go.Connect(leToken)
 	log.Printf("Done restoring mongo...")
 	log.Printf("Connecting mongo...")
 	session, err := mgo.Dial(deploymentData.MakeDialString())
