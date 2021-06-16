@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	CurrentVersion = "1.0.10"
+	CurrentVersion = "1.0.11"
 )
 
 func pullerService() {
@@ -43,12 +43,12 @@ func pullerService() {
 				continue
 			}
 			if !ok {
-				le.Printf("failed loading object from s3, bucket %s (no error)", response.BucketName)
+				log.Printf("failed loading object from s3, bucket %s (no error)", response.BucketName)
 				continue
 			}
 			log.Print(*lastObject.Key, " was loaded")
-			le.Print("object loaded from s3, deploying")
-			le.Close()
+			log.Print("object loaded from s3, deploying")
+
 			ok, err = utils.DeployToServer("dump.tar.gz", deploymentData)
 			if err != nil {
 				log.Printf("Error %v while deploying object, bucket %s", err, response.BucketName)
@@ -58,7 +58,7 @@ func pullerService() {
 				log.Printf("failed deploying object , bucket %s (no error)", response.BucketName)
 				continue
 			}
-			le.Print("deployed, anonymizing")
+			log.Print("deployed, anonymizing")
 
 			ok, err = utils.AnonymizeDB(deploymentData)
 			if err != nil {
