@@ -58,9 +58,6 @@ github.com/aws/aws-sdk-go/service/sts/stsiface
 github.com/bitly/go-simplejson
 # github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869
 ## explicit
-# github.com/bsphere/le_go v0.0.0-20200109081728-fc06dab2caa8
-## explicit
-github.com/bsphere/le_go
 # github.com/jmespath/go-jmespath v0.4.0
 github.com/jmespath/go-jmespath
 # github.com/kr/pretty v0.2.1
